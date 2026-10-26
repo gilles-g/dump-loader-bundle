@@ -1,0 +1,102 @@
+{% if unreadableJobDetail ?? false %}
+    <div class="alert">{{ 'progress.unreadable_job'|trans({}, 'DumpLoaderBundle') }} — {{ unreadableJobDetail }}</div>
+{% elseif job %}
+    <div class="card load load-{{ job.status.value }}">
+        <div class="load-head">
+            <div class="load-title">
+                <h2><span class="load-dot" aria-hidden="true"></span>{{ ('progress.heading.' ~ job.status.value)|trans({}, 'DumpLoaderBundle') }}</h2>
+                <p>
+                    <span class="mono">{{ job.dumpName }}</span>
+                    {%- if job.requester.isKnown %} · {{ 'progress.requested_by'|trans({'%name%': job.requester.name}, 'DumpLoaderBundle') }}{% endif %}
+                    {%- if job.startedAt %} · {{ 'progress.started_at'|trans({'%time%': job.startedAt|date('H:i')}, 'DumpLoaderBundle') }}{% endif %}
+                </p>
+            </div>
+            <div class="load-count">
+                <strong>{{ job.progress.stepNumber }}<small>/{{ job.progress.stepCount }}</small></strong>
+                <span>{{ 'progress.steps'|trans({}, 'DumpLoaderBundle') }}</span>
+            </div>
+        </div>
+
+        <div class="load-gauge"
+             role="progressbar"
+             aria-label="{{ 'progress.gauge'|trans({}, 'DumpLoaderBundle') }}"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             aria-valuenow="{{ job.progress.overall.value|round }}">
+            {% for step in job.steps %}
+                <span class="gauge-{{ step.status.value }}">
+                    {%- if step.isRunning %}<i style="width: {{ job.progress.stepPercentage.value|round }}%"></i>{% endif -%}
+                </span>
+            {% endfor %}
+        </div>
+
+        <ol class="timeline">
+            {% for step in job.steps %}
+                {% set elapsed = step.elapsedAt(seenAt) %}
+                {% set percentage = step.isRunning and job.progress.stepPercentage.value > 0
+                    ? 'progress.step_percentage'|trans({'%percentage%': job.progress.stepPercentage.value|round}, 'DumpLoaderBundle')
+                    : null %}
+                {% set meta = [percentage, elapsed ? elapsed.humanized : null]|filter(part => part)|join(' · ') %}
+                <li class="step-{{ step.status.value }}">
+                    <span class="timeline-marker" aria-hidden="true">
+                        {%- if step.status.value == 'done' -%}
+                            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        {%- elseif step.status.value == 'failed' -%}
+                            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        {%- elseif step.status.value == 'aborted' -%}
+                            <svg viewBox="0 0 24 24"><line x1="6" y1="12" x2="18" y2="12"></line></svg>
+                        {%- endif -%}
+                    </span>
+                    <div class="timeline-body">
+                        <div class="timeline-row">
+                            <span class="timeline-label">{{ step.label|trans({}, 'DumpLoaderBundle') }}</span>
+                            {% if step.status.value in ['running', 'failed', 'aborted'] %}
+                                <span class="step-badge">{{ ('step_status.' ~ step.status.value)|trans({}, 'DumpLoaderBundle') }}</span>
+                            {% else %}
+                                <span class="visually-hidden">{{ ('step_status.' ~ step.status.value)|trans({}, 'DumpLoaderBundle') }}</span>
+                            {% endif %}
+                            {% if meta %}
+                                <span class="timeline-leader"></span>
+                                <span class="timeline-meta">{{ meta }}</span>
+                            {% endif %}
+                        </div>
+                        {% if step.isRunning %}
+                            {{ include('@DumpLoader/_journal.html.twig', {log: job.log}) }}
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+
+        {% if job.runningStep is null %}
+            {{ include('@DumpLoader/_journal.html.twig', {log: job.log}) }}
+        {% endif %}
+
+        <div class="load-foot">
+            <p>
+                {% if job.status.isActive %}
+                    {{ job.startedAt
+                        ? 'progress.elapsed'|trans({'%duration%': job.elapsedAt(seenAt).humanized}, 'DumpLoaderBundle')
+                        : 'progress.waiting'|trans({}, 'DumpLoaderBundle') }}
+                    · {{ 'progress.live'|trans({}, 'DumpLoaderBundle') }}
+                {% elseif job.finishedAt %}
+                    {{ job.startedAt
+                        ? 'progress.ended_after'|trans({'%time%': job.finishedAt|date('H:i'), '%duration%': job.elapsedAt(seenAt).humanized}, 'DumpLoaderBundle')
+                        : 'progress.ended'|trans({'%time%': job.finishedAt|date('H:i')}, 'DumpLoaderBundle') }}
+                {% endif %}
+            </p>
+
+            {% if job.status.isActive %}
+                <form method="post"
+                      action="{{ path('dump_loader_abort') }}"
+                      data-confirm="{{ 'progress.abort_confirm'|trans({}, 'DumpLoaderBundle') }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('dump_loader_abort') }}">
+                    <input type="hidden" name="id" value="{{ job.id.value }}">
+                    <button type="submit" class="load-abort">{{ 'progress.abort'|trans({}, 'DumpLoaderBundle') }}</button>
+                </form>
+            {% else %}
+                <span data-terminal="1"></span>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

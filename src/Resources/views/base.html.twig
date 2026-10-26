@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ 'title'|trans({}, 'DumpLoaderBundle') }}{% endblock %}</title>
+    <style>
+        :root {
+            --primary: #6c72ff;
+            --success: #0acf97;
+            --danger: #fa5c7c;
+            --warning: #ffbc00;
+            --dark: #313a46;
+            --muted: #98a6ad;
+            --light: #eef2f7;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0 0 3rem;
+            background: #fafbfe;
+            color: var(--dark);
+            font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        header {
+            background: var(--dark);
+            color: #fff;
+            padding: 1.25rem 1.5rem;
+        }
+        header h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
+        header p { margin: .25rem 0 0; color: var(--muted); font-size: .85rem; }
+        main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+        .card {
+            background: #fff;
+            border-radius: .35rem;
+            box-shadow: 0 0 35px 0 rgba(154, 161, 171, .15);
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+        }
+        .card h2 { margin: 0 0 1rem; font-size: .95rem; font-weight: 600; }
+        .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+        .kpi { background: #fff; border-radius: .35rem; padding: 1rem 1.25rem; box-shadow: 0 0 35px 0 rgba(154, 161, 171, .15); }
+        .kpi span { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .03em; }
+        .kpi strong { display: block; font-size: 1.5rem; font-weight: 600; margin-top: .35rem; }
+        .badge { border-radius: .25rem; color: #fff; display: inline-block; font-size: .7rem; font-weight: 600; padding: .2rem .5rem; text-transform: uppercase; }
+        .badge-pending { background: var(--muted); }
+        .badge-running { background: var(--primary); }
+        .badge-completed { background: var(--success); }
+        .badge-failed, .badge-lost { background: var(--danger); }
+        .badge-aborted { background: var(--warning); color: var(--dark); }
+        .bar { background: var(--light); border-radius: .25rem; height: .5rem; overflow: hidden; }
+        .bar > i { background: var(--primary); display: block; height: 100%; transition: width .3s ease; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border-bottom: 1px solid var(--light); padding: .6rem .5rem; text-align: left; }
+        th { color: var(--muted); font-size: .75rem; font-weight: 600; text-transform: uppercase; }
+        label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .35rem; }
+        select, button { border-radius: .25rem; font: inherit; padding: .5rem .75rem; }
+        select { border: 1px solid #dee2e6; width: 100%; }
+        button { background: var(--primary); border: 0; color: #fff; cursor: pointer; font-weight: 600; }
+        button[disabled] { background: var(--muted); cursor: not-allowed; }
+        button.danger { background: var(--danger); }
+        .log { background: var(--dark); border-radius: .25rem; color: var(--light); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; max-height: 17rem; overflow-y: auto; padding: .75rem; }
+        .log div { white-space: pre-wrap; }
+        .log .tag-error { color: var(--danger); }
+        .log .tag-ok, .log .tag-done { color: var(--success); }
+        .log .tag-stop { color: var(--warning); }
+        .steps { list-style: none; margin: 0 0 1rem; padding: 0; }
+        .steps li { align-items: center; display: flex; gap: .5rem; padding: .25rem 0; }
+        .alert { border-left: 3px solid var(--danger); background: #fff5f7; border-radius: .25rem; margin-bottom: 1rem; padding: .75rem 1rem; }
+        .alert.ok { border-color: var(--success); background: #f1fdf9; }
+        .muted { color: var(--muted); }
+        .inline { align-items: center; display: flex; gap: .5rem; }
+    </style>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<header>
+    <h1>{{ 'title'|trans({}, 'DumpLoaderBundle') }}</h1>
+    {% block subtitle %}<p>{{ 'target'|trans({}, 'DumpLoaderBundle') }} <strong>{{ dashboard.targetDatabase ?? '—' }}</strong></p>{% endblock %}
+</header>
+<main>
+    {% block body %}{% endblock %}
+</main>
+<script>
+    (function () {
+        document.addEventListener('submit', function (event) {
+            if (event.target.dataset.confirm && !window.confirm(event.target.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+
+        var holder = document.getElementById('dump-loader-progress');
+
+        if (!holder) {
+            return;
+        }
+
+        function logPane() {
+            return holder.querySelector('.log');
+        }
+
+        function journal() {
+            return holder.querySelector('.journal details');
+        }
+
+        function anchorAnimationsToWallClock() {
+            holder.style.setProperty('--load-phase', -(Date.now() % 2000) + 'ms');
+        }
+
+        function isPinnedToBottom(pane) {
+            return pane.scrollHeight - pane.scrollTop - pane.clientHeight <= 4;
+        }
+
+        holder.addEventListener('toggle', function (event) {
+            var details = event.target;
+
+            if (details.dataset.restored) {
+                delete details.dataset.restored;
+
+                return;
+            }
+
+            var pane = details.open ? details.querySelector('.log') : null;
+
+            if (pane) {
+                pane.scrollTop = pane.scrollHeight;
+            }
+        }, true);
+
+        function render(html) {
+            var previous = logPane();
+            var scrollTop = previous ? previous.scrollTop : 0;
+            var pinned = !previous || isPinnedToBottom(previous);
+            var wasOpen = journal() ? journal().open : false;
+
+            anchorAnimationsToWallClock();
+            holder.innerHTML = html;
+
+            var details = journal();
+
+            if (details && wasOpen) {
+                details.dataset.restored = '1';
+                details.open = true;
+            }
+
+            var current = logPane();
+
+            if (current) {
+                current.scrollTop = pinned ? current.scrollHeight : scrollTop;
+            }
+        }
+
+        function refresh() {
+            fetch(holder.dataset.url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function (response) { return response.text(); })
+                .then(function (html) {
+                    render(html);
+
+                    if (holder.querySelector('[data-terminal="1"]')) {
+                        return;
+                    }
+
+                    window.setTimeout(refresh, 1000);
+                })
+                .catch(function () { window.setTimeout(refresh, 5000); });
+        }
+
+        if (holder.dataset.active === '1') {
+            anchorAnimationsToWallClock();
+
+            var pane = logPane();
+
+            if (pane) {
+                pane.scrollTop = pane.scrollHeight;
+            }
+
+            window.setTimeout(refresh, 1000);
+        }
+    })();
+</script>
+</body>
+</html>

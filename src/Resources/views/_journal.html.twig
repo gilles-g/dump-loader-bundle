@@ -1,0 +1,21 @@
+<div class="journal">
+    {% if log.lines is not empty %}
+        <div class="journal-tail">
+            {% for line in log.lines|slice(-3) %}
+                <div class="tag-{{ line.tag.value }}"><time>{{ line.at|date('H:i:s') }}</time> {{ line.message|trans({}, 'DumpLoaderBundle') }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <details>
+        <summary>{{ 'progress.show_log'|trans({'%count%': log.omittedLines + log.lines|length}, 'DumpLoaderBundle') }}</summary>
+        <div class="log">
+            {% if log.omittedLines %}
+                <p class="muted">{{ 'progress.omitted'|trans({'%count%': log.omittedLines}, 'DumpLoaderBundle') }}</p>
+            {% endif %}
+            {% for line in log.lines %}
+                <div class="tag-{{ line.tag.value }}">[{{ line.at|date('H:i:s') }}] {{ line.message|trans({}, 'DumpLoaderBundle') }}</div>
+            {% endfor %}
+        </div>
+    </details>
+</div>

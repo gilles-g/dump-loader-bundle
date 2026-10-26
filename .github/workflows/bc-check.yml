@@ -1,0 +1,48 @@
+name: Backward compatibility
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/bc-check.yml
+      - src/**
+  push:
+    branches: [main, '*.x']
+    paths:
+      - .github/workflows/bc-check.yml
+      - src/**
+
+permissions:
+  contents: read
+
+jobs:
+  last-release:
+    name: Find the last release
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.describe.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - id: describe
+        run: echo "tag=$(git describe --tags --abbrev=0 2>/dev/null)" >> "$GITHUB_OUTPUT"
+
+  roave-bc-check:
+    name: Roave BC check against ${{ needs.last-release.outputs.tag }}
+    needs: last-release
+    if: needs.last-release.outputs.tag != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2, roave/backward-compatibility-check
+          coverage: none
+
+      - name: Compare with the last release
+        run: roave-backward-compatibility-check --from=${{ needs.last-release.outputs.tag }} --format=github-actions

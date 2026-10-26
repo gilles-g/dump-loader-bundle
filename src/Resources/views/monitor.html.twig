@@ -1,0 +1,21 @@
+{% extends '@DumpLoader/base.html.twig' %}
+
+{% block stylesheets %}
+    <style>{{ source('@DumpLoader/monitor.css') }}</style>
+{% endblock %}
+
+{% block subtitle %}{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('dump_loader_error') %}
+        <div class="alert">{{ message|trans({}, 'DumpLoaderBundle') }}</div>
+    {% endfor %}
+
+    <div id="dump-loader-progress"
+         data-url="{{ path('dump_loader_progress') }}"
+         data-active="{{ monitor.isLive ? '1' : '0' }}">
+        {{ include('@DumpLoader/_progress.html.twig', {job: monitor.followedJob, unreadableJobDetail: monitor.unreadableJobDetail, seenAt: monitor.seenAt}) }}
+    </div>
+
+    {{ include('@DumpLoader/_history.html.twig', {history: monitor.history}) }}
+{% endblock %}

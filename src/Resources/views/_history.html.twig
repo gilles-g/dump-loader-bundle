@@ -1,0 +1,33 @@
+<div class="card">
+    <h2>{{ 'history.title'|trans({}, 'DumpLoaderBundle') }}</h2>
+
+    {% if history.isEmpty %}
+        <p class="muted">{{ 'history.empty'|trans({}, 'DumpLoaderBundle') }}</p>
+    {% else %}
+        <table>
+            <thead>
+            <tr>
+                <th>{{ 'history.status'|trans({}, 'DumpLoaderBundle') }}</th>
+                <th>{{ 'history.dump'|trans({}, 'DumpLoaderBundle') }}</th>
+                <th>{{ 'history.requester'|trans({}, 'DumpLoaderBundle') }}</th>
+                <th>{{ 'history.requested_at'|trans({}, 'DumpLoaderBundle') }}</th>
+                <th>{{ 'history.finished_at'|trans({}, 'DumpLoaderBundle') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for snapshot in history %}
+                <tr>
+                    <td><span class="badge badge-{{ snapshot.status.value }}">{{ ('status.' ~ snapshot.status.value)|trans({}, 'DumpLoaderBundle') }}</span></td>
+                    <td>
+                        {{ snapshot.dumpName }}
+                        {% if snapshot.failureReason %}<div class="muted">{{ snapshot.failureReason }}</div>{% endif %}
+                    </td>
+                    <td>{{ snapshot.requester.isKnown ? snapshot.requester.name : 'history.unknown_requester'|trans({}, 'DumpLoaderBundle') }}</td>
+                    <td>{{ snapshot.requestedAt|date('Y-m-d H:i') }}</td>
+                    <td>{{ snapshot.finishedAt ? snapshot.finishedAt|date('Y-m-d H:i') : '—' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>

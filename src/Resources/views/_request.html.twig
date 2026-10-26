@@ -1,0 +1,56 @@
+<div class="card">
+    <h2>{{ 'request.title'|trans({}, 'DumpLoaderBundle') }}</h2>
+
+    {% if dashboard.activeJob %}
+        <p class="muted">{{ 'request.disabled'|trans({}, 'DumpLoaderBundle') }}</p>
+    {% elseif dashboard.unreadableJobDetail %}
+        <div class="alert">{{ 'request.unreadable_job'|trans({}, 'DumpLoaderBundle') }} — {{ dashboard.unreadableJobDetail }}</div>
+    {% elseif dashboard.targetDatabase is null %}
+        <p class="muted">{{ 'request.no_target'|trans({}, 'DumpLoaderBundle') }}</p>
+    {% elseif dashboard.dumps|length == 0 %}
+        <p class="muted">{{ 'request.no_dump'|trans({}, 'DumpLoaderBundle') }}</p>
+    {% else %}
+        <form method="post"
+              action="{{ path('dump_loader_request') }}"
+              data-confirm="{{ 'request.confirm_js'|trans({'%database%': dashboard.targetDatabase}, 'DumpLoaderBundle') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('dump_loader_request') }}">
+
+            <label for="dump-loader-dump">{{ 'request.dump'|trans({}, 'DumpLoaderBundle') }}</label>
+            <select id="dump-loader-dump" name="dump" required>
+                {% for dump in dashboard.dumps %}
+                    <option value="{{ dump.path }}">
+                        {{ dump.name }} — {{ dump.size.humanized }} — {{ dump.modifiedAt|date('Y-m-d H:i') }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            {% if dashboard.availableOptions|length %}
+                <p style="margin:1rem 0 .35rem"><strong>{{ 'request.options'|trans({}, 'DumpLoaderBundle') }}</strong></p>
+                {% for option in dashboard.availableOptions %}
+                    <div class="inline">
+                        <input type="checkbox"
+                               id="dump-loader-option-{{ option.name }}"
+                               name="options[]"
+                               value="{{ option.name }}"
+                               {{ dashboard.defaultOptions.includes(option.name) ? 'checked' : '' }}>
+                        <label for="dump-loader-option-{{ option.name }}" style="margin:0;font-weight:400">
+                            {{ option.label|trans({}, 'DumpLoaderBundle') }}
+                            {% if option.description is not empty %}
+                                <span class="muted">— {{ option.description|trans({}, 'DumpLoaderBundle') }}</span>
+                            {% endif %}
+                        </label>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="inline" style="margin:1rem 0">
+                <input type="checkbox" id="dump-loader-confirm" name="confirm" value="1" required>
+                <label for="dump-loader-confirm" style="margin:0;font-weight:400">
+                    {{ 'request.confirm'|trans({'%database%': dashboard.targetDatabase}, 'DumpLoaderBundle') }}
+                </label>
+            </div>
+
+            <button type="submit">{{ 'request.submit'|trans({}, 'DumpLoaderBundle') }}</button>
+        </form>
+    {% endif %}
+</div>

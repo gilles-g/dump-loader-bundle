@@ -1,0 +1,34 @@
+services:
+  php:
+    build:
+      context: .docker/php
+      args:
+        APP_USER_ID: ${APP_USER_ID:-1000}
+        APP_GROUP_ID: ${APP_GROUP_ID:-1000}
+    working_dir: /var/www/dump-loader
+    volumes:
+      - ./:/var/www/dump-loader:cached
+    environment:
+      DUMP_LOADER_TEST_DSN: ${DUMP_LOADER_TEST_DSN:-mysql://root:root@database:3306/dump_loader_test}
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: mariadb:11.8
+    command: --max_allowed_packet=256M
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: ${DATABASE_NAME:-dump_loader_test}
+    ports:
+      - "${DATABASE_PORT:-3307}:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -uroot -p\"$$MARIADB_ROOT_PASSWORD\" -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - database_data:/var/lib/mysql
+
+volumes:
+  database_data:
