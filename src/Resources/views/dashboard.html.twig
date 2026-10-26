@@ -1,0 +1,27 @@
+{% extends '@DumpLoader/base.html.twig' %}
+
+{% block body %}
+    {% for message in app.flashes('dump_loader_error') %}
+        <div class="alert">{{ message|trans({}, 'DumpLoaderBundle') }}</div>
+    {% endfor %}
+
+    {% if not requirements.allSatisfied %}
+        <div class="alert">
+            <strong>{{ 'requirements.unmet'|trans({}, 'DumpLoaderBundle') }}</strong>
+            <ul>
+                {% for requirement in requirements.unsatisfied %}
+                    <li>{{ requirement.label|trans({}, 'DumpLoaderBundle') }} — {{ requirement.detail }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ include('@DumpLoader/_kpi.html.twig') }}
+
+    {% if dashboard.activeJob %}
+        {{ include('@DumpLoader/_active.html.twig') }}
+    {% endif %}
+
+    {{ include('@DumpLoader/_request.html.twig') }}
+    {{ include('@DumpLoader/_history.html.twig', {history: dashboard.history}) }}
+{% endblock %}

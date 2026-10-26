@@ -1,0 +1,4 @@
+dump_loader:
+    resource: '@DumpLoaderBundle/Resources/config/routes.php'
+    type: php
+    prefix: /dump-loader

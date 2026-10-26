@@ -1,0 +1,31 @@
+framework:
+    secret: 'dump-loader-test'
+    test: true
+    http_method_override: false
+    handle_all_throwables: true
+    php_errors:
+        log: true
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+    csrf_protection: true
+    router:
+        utf8: true
+        resource: '%kernel.project_dir%/tests/Integration/config/routes.yaml'
+
+twig:
+    strict_variables: true
+
+services:
+    dumps.storage:
+        class: League\Flysystem\Filesystem
+        arguments:
+            - !service
+                class: League\Flysystem\InMemory\InMemoryFilesystemAdapter
+
+dump_loader:
+    source:
+        flysystem: 'dumps.storage'
+    target_database:
+        dsn: 'mysql://loader:s3cr3t@127.0.0.1:3306/preprod'
+    var_dir: '%kernel.cache_dir%/dump-loader'
+    execution: synchronous

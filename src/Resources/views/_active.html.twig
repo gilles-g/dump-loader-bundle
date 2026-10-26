@@ -1,0 +1,10 @@
+<div class="card">
+    <h2>{{ 'active.title'|trans({}, 'DumpLoaderBundle') }}</h2>
+
+    <p class="muted">
+        <span class="badge badge-{{ dashboard.activeJob.status.value }}">{{ ('status.' ~ dashboard.activeJob.status.value)|trans({}, 'DumpLoaderBundle') }}</span>
+        {{ dashboard.activeJob.dumpName }}
+    </p>
+
+    <p><a href="{{ path('dump_loader_open_monitor') }}">{{ 'active.follow'|trans({}, 'DumpLoaderBundle') }}</a></p>
+</div>

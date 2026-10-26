@@ -1,0 +1,112 @@
+title: 'Load a dump'
+target: 'Target database:'
+
+kpi:
+    dumps: 'Available dumps'
+    completed: 'Completed loads'
+    failed: 'Failed loads'
+    last_completed: 'Last successful load'
+
+request:
+    title: 'Load a dump'
+    dump: 'Dump to load'
+    options: 'Options'
+    submit: 'Load this dump'
+    confirm: 'I understand that the content of %database% will be overwritten.'
+    confirm_js: 'The content of %database% will be overwritten. Continue?'
+    disabled: 'A load job is already running; wait for it to finish.'
+    no_dump: 'No dump was found in the configured source.'
+    no_target: 'The target database cannot be read: fix the dump_loader.target_database DSN before starting a load.'
+    unreadable_job: 'A load job file cannot be read, so a load may still be running: no new load can start until that file is repaired or removed.'
+
+active:
+    title: 'A load is running'
+    follow: 'Follow it live'
+
+progress:
+    heading:
+        pending: 'Load pending'
+        running: 'Load in progress'
+        completed: 'Load completed'
+        failed: 'Load failed'
+        aborted: 'Load aborted'
+        lost: 'Load lost'
+    requested_by: 'requested by %name%'
+    started_at: 'started at %time%'
+    steps: 'steps'
+    gauge: 'Load progress'
+    step_percentage: '%percentage%%'
+    show_log: 'Show the full log (%count% lines)'
+    waiting: 'Waiting to start'
+    elapsed: '%duration% elapsed'
+    live: 'this page refreshes itself'
+    ended: 'Ended at %time%'
+    ended_after: 'Ended at %time%, after %duration%'
+    abort: 'Abort this load'
+    abort_confirm: 'The database will be left in a partial state. Abort anyway?'
+    omitted: '%count% earlier lines were omitted.'
+    unreadable_job: 'A load job file cannot be read, so the running load, if any, cannot be followed.'
+
+history:
+    title: 'History'
+    empty: 'No load job has run yet.'
+    status: 'Status'
+    dump: 'Dump'
+    requester: 'Requested by'
+    requested_at: 'Requested at'
+    finished_at: 'Finished at'
+    unknown_requester: 'unknown'
+
+status:
+    pending: 'Pending'
+    running: 'Running'
+    completed: 'Completed'
+    failed: 'Failed'
+    aborted: 'Aborted'
+    lost: 'Lost'
+
+step_status:
+    todo: 'To do'
+    running: 'Running'
+    done: 'Done'
+    failed: 'Failed'
+    aborted: 'Aborted'
+
+step:
+    drop_all_tables:
+        label: 'Empty the database'
+        description: 'Checks that the dump can be restored, then drops every table and view of the target database before the restore.'
+    restore_database:
+        label: 'Restore the database'
+        description: 'Loads the dump into the target database.'
+    run_migrations:
+        label: 'Run migrations'
+        description: 'Runs doctrine:migrations:migrate after the restore.'
+    clear_caches:
+        label: 'Clear caches'
+        description: 'Runs cache:clear after the restore.'
+
+requirements:
+    unmet: 'This host cannot run a load job yet:'
+    mysql_binary: 'MySQL client binary'
+    php_binary: 'PHP binary'
+    proc_open: 'proc_open() available'
+    var_dir: 'Writable working directory'
+    console: 'Symfony console'
+    setsid: 'Process detachment'
+    target_database: 'Target database DSN'
+    dumps: 'Dump source'
+
+flash:
+    invalid_token: 'The form token was invalid; nothing was loaded.'
+    confirmation_required: 'You must confirm that the target database will be overwritten.'
+    already_running: 'A load job is already running.'
+    unknown_dump: 'That dump no longer exists in the source.'
+    dump_not_restorable: 'That dump cannot be restored into the target database (unreadable, or produced with mysqldump --databases); nothing was loaded.'
+    unreadable_job: 'A load job file cannot be read, so a load may still be running; nothing was loaded.'
+    abort_invalid_token: 'The form token was invalid; the load was not aborted.'
+    abort_unknown_job: 'That load job no longer exists; nothing was aborted.'
+    abort_unreadable_job: 'The file of that load job cannot be read; nothing was aborted.'
+
+access:
+    denied: 'Your access to this monitor is missing or has expired: open it again from the dump loader dashboard.'

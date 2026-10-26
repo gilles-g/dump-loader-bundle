@@ -1,0 +1,112 @@
+title: 'Charger un dump'
+target: 'Base cible :'
+
+kpi:
+    dumps: 'Dumps disponibles'
+    completed: 'Chargements réussis'
+    failed: 'Chargements en échec'
+    last_completed: 'Dernier chargement réussi'
+
+request:
+    title: 'Charger un dump'
+    dump: 'Dump à charger'
+    options: 'Options'
+    submit: 'Charger ce dump'
+    confirm: "Je comprends que le contenu de %database% sera écrasé."
+    confirm_js: 'Le contenu de %database% sera écrasé. Continuer ?'
+    disabled: 'Un chargement est déjà en cours, attendez sa fin.'
+    no_dump: 'Aucun dump trouvé dans la source configurée.'
+    no_target: 'La base cible est illisible : corrigez le DSN de dump_loader.target_database avant de lancer un chargement.'
+    unreadable_job: 'Un fichier de job est illisible, un chargement est donc peut-être encore en cours : aucun nouveau chargement ne peut démarrer tant que ce fichier n’est pas réparé ou supprimé.'
+
+active:
+    title: 'Un chargement est en cours'
+    follow: 'Suivre le chargement'
+
+progress:
+    heading:
+        pending: 'Chargement en attente'
+        running: 'Chargement en cours'
+        completed: 'Chargement terminé'
+        failed: 'Chargement en échec'
+        aborted: 'Chargement interrompu'
+        lost: 'Chargement perdu'
+    requested_by: 'demandé par %name%'
+    started_at: 'démarré à %time%'
+    steps: 'étapes'
+    gauge: 'Avancement du chargement'
+    step_percentage: '%percentage% %'
+    show_log: 'Afficher le journal complet (%count% lignes)'
+    waiting: 'En attente de démarrage'
+    elapsed: '%duration% écoulées'
+    live: 'la page se met à jour toute seule'
+    ended: 'Fin à %time%'
+    ended_after: 'Fin à %time%, après %duration%'
+    abort: 'Interrompre ce chargement'
+    abort_confirm: 'La base restera dans un état partiel. Interrompre quand même ?'
+    omitted: '%count% lignes antérieures ont été omises.'
+    unreadable_job: 'Un fichier de job est illisible : le chargement en cours, s’il y en a un, ne peut pas être suivi.'
+
+history:
+    title: 'Historique'
+    empty: 'Aucun chargement n’a encore été lancé.'
+    status: 'Statut'
+    dump: 'Dump'
+    requester: 'Demandé par'
+    requested_at: 'Demandé le'
+    finished_at: 'Terminé le'
+    unknown_requester: 'inconnu'
+
+status:
+    pending: 'En attente'
+    running: 'En cours'
+    completed: 'Terminé'
+    failed: 'Échec'
+    aborted: 'Interrompu'
+    lost: 'Perdu'
+
+step_status:
+    todo: 'À faire'
+    running: 'En cours'
+    done: 'Terminée'
+    failed: 'Échec'
+    aborted: 'Interrompue'
+
+step:
+    drop_all_tables:
+        label: 'Vider la base'
+        description: 'Vérifie que le dump est restaurable, puis supprime toutes les tables et vues de la base cible avant la restauration.'
+    restore_database:
+        label: 'Restaurer la base'
+        description: 'Charge le dump dans la base cible.'
+    run_migrations:
+        label: 'Jouer les migrations'
+        description: 'Lance doctrine:migrations:migrate après la restauration.'
+    clear_caches:
+        label: 'Vider les caches'
+        description: 'Lance cache:clear après la restauration.'
+
+requirements:
+    unmet: 'Cet hôte ne peut pas encore lancer de chargement :'
+    mysql_binary: 'Binaire client MySQL'
+    php_binary: 'Binaire PHP'
+    proc_open: 'proc_open() disponible'
+    var_dir: 'Répertoire de travail inscriptible'
+    console: 'Console Symfony'
+    setsid: 'Détachement du processus'
+    target_database: 'DSN de la base cible'
+    dumps: 'Source des dumps'
+
+flash:
+    invalid_token: 'Le jeton du formulaire était invalide, rien n’a été chargé.'
+    confirmation_required: 'Vous devez confirmer que la base cible sera écrasée.'
+    already_running: 'Un chargement est déjà en cours.'
+    unknown_dump: 'Ce dump n’existe plus dans la source.'
+    dump_not_restorable: 'Ce dump ne peut pas être restauré dans la base cible (dump illisible, ou produit avec mysqldump --databases) : rien n’a été chargé.'
+    unreadable_job: 'Un fichier de job est illisible, un chargement est donc peut-être encore en cours : rien n’a été chargé.'
+    abort_invalid_token: 'Le jeton du formulaire était invalide : le chargement n’a pas été interrompu.'
+    abort_unknown_job: 'Ce chargement n’existe plus : rien n’a été interrompu.'
+    abort_unreadable_job: 'Le fichier de ce chargement est illisible : rien n’a été interrompu.'
+
+access:
+    denied: 'Votre accès à ce suivi est absent ou a expiré : rouvrez-le depuis le tableau de bord du chargement de dump.'

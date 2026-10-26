@@ -1,0 +1,45 @@
+framework:
+    secret: 'dump-loader-test'
+    test: true
+    http_method_override: false
+    handle_all_throwables: true
+    php_errors:
+        log: true
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+    csrf_protection: true
+    router:
+        utf8: true
+        resource: '%kernel.project_dir%/tests/Integration/config/routes.yaml'
+
+twig:
+    strict_variables: true
+
+services:
+    dump_loader.process_runner:
+        class: DumpLoader\Tests\Double\RecordingProcessRunner
+        factory: ['DumpLoader\Tests\Double\RecordingProcessRunner', 'succeeding']
+        public: true
+
+dump_loader:
+    source:
+        directory: '%kernel.project_dir%/tests/Fixtures/dumps'
+    target_database:
+        dsn: 'mysql://loader:s3cr3t@127.0.0.1:3306/preprod'
+    var_dir: '%kernel.cache_dir%/dump-loader'
+    execution: synchronous
+    after_load:
+        reset_admin_password:
+            label: 'Reset the admin password'
+            description: 'Puts back a known password on the admin account.'
+            command:
+                - 'dbal:run-sql'
+                - 'UPDATE `admin` SET `password` = "%env(ADMIN_PASSWORD)%" WHERE `id` = 3282;'
+        anonymize_emails:
+            enabled_by_default: false
+            command:
+                - 'app:anonymize-emails'
+        delete_test_accounts:
+            command:
+                - 'dbal:run-sql'
+                - 'DELETE FROM `admin` WHERE `email` LIKE "%%@example.com";'
