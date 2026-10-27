@@ -19,7 +19,7 @@ use function Symfony\Component\String\u;
 
 final readonly class MysqlBinary
 {
-    private const FALLBACK = 'mariadb';
+    private const string FALLBACK = 'mariadb';
 
     public function __construct(
         private string $binary = 'mysql',

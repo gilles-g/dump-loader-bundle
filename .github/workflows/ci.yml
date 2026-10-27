@@ -16,10 +16,10 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php: '8.2'
+                    - php: '8.4'
                       symfony: '6.4.*'
                       tui: false
-                    - php: '8.2'
+                    - php: '8.4'
                       symfony: '7.4.*'
                       tui: false
                     - php: '8.4'
@@ -29,7 +29,7 @@ jobs:
                       symfony: '8.1.*'
                       tui: true
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
             - uses: shivammathur/setup-php@v2
               with:
@@ -38,7 +38,7 @@ jobs:
                   tools: composer:v2, flex
                   coverage: none
 
-            - name: Drop symfony/tui, which needs PHP 8.4.1 and Symfony 8.1
+            - name: Drop symfony/tui, which needs Symfony 8.1
               if: ${{ !matrix.tui }}
               run: composer remove --dev symfony/tui --no-update
 
@@ -67,7 +67,7 @@ jobs:
                     --health-timeout=5s
                     --health-retries=20
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
             - uses: shivammathur/setup-php@v2
               with:
@@ -97,7 +97,7 @@ jobs:
         name: Coverage
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
             - uses: shivammathur/setup-php@v2
               with:

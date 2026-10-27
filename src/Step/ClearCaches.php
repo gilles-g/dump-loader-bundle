@@ -20,7 +20,7 @@ use DumpLoader\LoadJob\LogTag;
 
 final readonly class ClearCaches implements OptionalStep
 {
-    public const NAME = 'clear_caches';
+    public const string NAME = 'clear_caches';
 
     public function __construct(
         private ProcessRunner $processes,

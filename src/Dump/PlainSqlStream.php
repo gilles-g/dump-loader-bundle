@@ -15,7 +15,7 @@ namespace DumpLoader\Dump;
 
 final class PlainSqlStream implements SqlStream
 {
-    private const DEFAULT_CHUNK_SIZE = 1_048_576;
+    private const int DEFAULT_CHUNK_SIZE = 1_048_576;
 
     private int $rawBytesRead = 0;
 

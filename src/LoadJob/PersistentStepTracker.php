@@ -18,7 +18,7 @@ use Psr\Clock\ClockInterface;
 
 final class PersistentStepTracker implements StepTracker
 {
-    private const MIN_SECONDS_BETWEEN_SAVES = 0.5;
+    private const float MIN_SECONDS_BETWEEN_SAVES = 0.5;
 
     private ?float $lastSavedAt = null;
 

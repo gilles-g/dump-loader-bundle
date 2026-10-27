@@ -60,7 +60,7 @@ final class DropAllTablesTest extends TestCase
         $databaseClient = $this->createMock(DatabaseClient::class);
         $databaseClient->expects(self::once())->method('dropAllTables')->with($target, $tracker);
 
-        (new DropAllTables($this->dumpSource(), $this->createStub(RestorePolicy::class), $databaseClient, self::targetDsn()))->run(self::context(), $tracker);
+        new DropAllTables($this->dumpSource(), $this->createStub(RestorePolicy::class), $databaseClient, self::targetDsn())->run(self::context(), $tracker);
     }
 
     #[Test]
@@ -75,7 +75,7 @@ final class DropAllTablesTest extends TestCase
         $restorePolicy = $this->createMock(RestorePolicy::class);
         $restorePolicy->expects(self::once())->method('ensureRestorable')->with($input);
 
-        (new DropAllTables($dumpSource, $restorePolicy, $this->createStub(DatabaseClient::class), self::targetDsn()))->run($context, $this->createStub(StepTracker::class));
+        new DropAllTables($dumpSource, $restorePolicy, $this->createStub(DatabaseClient::class), self::targetDsn())->run($context, $this->createStub(StepTracker::class));
     }
 
     #[Test]
@@ -89,7 +89,7 @@ final class DropAllTablesTest extends TestCase
 
         $this->expectException(CorruptedDump::class);
 
-        (new DropAllTables($this->dumpSource(), $restorePolicy, $databaseClient, self::targetDsn()))->run(self::context(), $this->createStub(StepTracker::class));
+        new DropAllTables($this->dumpSource(), $restorePolicy, $databaseClient, self::targetDsn())->run(self::context(), $this->createStub(StepTracker::class));
     }
 
     #[Test]
@@ -103,7 +103,7 @@ final class DropAllTablesTest extends TestCase
 
         $this->expectException(DumpNotFound::class);
 
-        (new DropAllTables($dumpSource, $this->createStub(RestorePolicy::class), $databaseClient, self::targetDsn()))->run(self::context(), $this->createStub(StepTracker::class));
+        new DropAllTables($dumpSource, $this->createStub(RestorePolicy::class), $databaseClient, self::targetDsn())->run(self::context(), $this->createStub(StepTracker::class));
     }
 
     #[Test]

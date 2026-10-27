@@ -20,7 +20,7 @@ use DumpLoader\LoadJob\LogTag;
 
 final readonly class RunMigrations implements OptionalStep
 {
-    public const NAME = 'run_migrations';
+    public const string NAME = 'run_migrations';
 
     public function __construct(
         private ProcessRunner $processes,

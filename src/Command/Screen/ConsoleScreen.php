@@ -25,7 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final readonly class ConsoleScreen implements LoadDumpScreen
 {
-    private const POLL_INTERVAL_SECONDS = 0.5;
+    private const float POLL_INTERVAL_SECONDS = 0.5;
 
     public function __construct(
         private SymfonyStyle $io,

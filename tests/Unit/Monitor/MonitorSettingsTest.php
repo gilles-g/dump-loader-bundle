@@ -32,7 +32,7 @@ final class MonitorSettingsTest extends TestCase
     #[Test]
     public function it_should_read_the_jobs_where_the_bundle_writes_them(): void
     {
-        self::assertSame('/data/dump-loader/jobs', (new MonitorSettings('/data/dump-loader'))->jobsDir());
+        self::assertSame('/data/dump-loader/jobs', new MonitorSettings('/data/dump-loader')->jobsDir());
     }
 
     #[Test]

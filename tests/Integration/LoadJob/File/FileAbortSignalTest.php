@@ -96,7 +96,7 @@ final class FileAbortSignalTest extends TestCase
     {
         $this->expectException(JobDirectoryNotWritable::class);
 
-        (new FileAbortSignal('/proc/nowhere/dump-loader'))->request($this->anId());
+        new FileAbortSignal('/proc/nowhere/dump-loader')->request($this->anId());
     }
 
     #[Test]
@@ -107,7 +107,7 @@ final class FileAbortSignalTest extends TestCase
         try {
             $this->expectException(JobDirectoryNotWritable::class);
 
-            (new FileAbortSignal($this->directory))->request($this->anId());
+            new FileAbortSignal($this->directory)->request($this->anId());
         } finally {
             chmod($this->directory, 0o775);
         }

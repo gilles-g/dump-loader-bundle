@@ -29,7 +29,7 @@ final class ChooseRequesterPassTest extends TestCase
         $container = $this->container();
         $container->register('security.token_storage', \stdClass::class);
 
-        (new ChooseRequesterPass())->process($container);
+        new ChooseRequesterPass()->process($container);
 
         self::assertSame(SecurityRequester::class, (string) $container->getAlias('dump_loader.requester'));
         self::assertTrue($container->hasDefinition(SecurityRequester::class));
@@ -40,7 +40,7 @@ final class ChooseRequesterPassTest extends TestCase
     {
         $container = $this->container();
 
-        (new ChooseRequesterPass())->process($container);
+        new ChooseRequesterPass()->process($container);
 
         self::assertSame(UnknownRequester::class, (string) $container->getAlias('dump_loader.requester'));
         self::assertFalse($container->hasDefinition(SecurityRequester::class));

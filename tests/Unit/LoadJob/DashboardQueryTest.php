@@ -109,14 +109,14 @@ final class DashboardQueryTest extends TestCase
             $this->aSnapshot('01J8Z9P0000000000000000002', LoadJobStatus::Completed, new \DateTimeImmutable('2026-09-17 10:00:00')),
         ));
 
-        $dashboard = (new DashboardQuery(
+        $dashboard = new DashboardQuery(
             dumps: $this->aDumpSource(new Dumps()),
             steps: new StepSequence([]),
             jobs: $jobs,
             vanished: $this->noVanishedJob(),
             targetDatabaseDsn: $this->aTargetDsn(),
             historyLimit: 20,
-        ))->current();
+        )->current();
 
         self::assertNull($dashboard->activeJob);
         self::assertSame('Cannot read the load job stored at "jobs/01J8Z9P0000000000000000001.json": Syntax error', $dashboard->unreadableJobDetail);

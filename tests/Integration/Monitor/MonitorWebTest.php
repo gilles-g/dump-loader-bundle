@@ -42,9 +42,9 @@ final class MonitorWebTest extends WebTestCase
 {
     use BootsTestKernel;
 
-    private const MOUNT_PATH = '/dump-loader/monitor';
+    private const string MOUNT_PATH = '/dump-loader/monitor';
 
-    private const PROJECT_DIR = '/DumpLoaderBundle/monitor';
+    private const string PROJECT_DIR = '/DumpLoaderBundle/monitor';
 
     private KernelBrowser $client;
 

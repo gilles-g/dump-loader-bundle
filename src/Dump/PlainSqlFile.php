@@ -17,7 +17,7 @@ use DumpLoader\Execution\ShellCommand;
 
 final readonly class PlainSqlFile implements SqlInput
 {
-    private const SCRIPT = <<<'SH'
+    private const string SCRIPT = <<<'SH'
         dump=$1
         shift
         exec "$@" < "$dump"

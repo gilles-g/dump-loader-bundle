@@ -60,8 +60,8 @@ use Symfony\Component\Process\ExecutableFinder;
 
 final class LoadDumpCommandTest extends TestCase
 {
-    private const SIGINT = 2;
-    private const INTERRUPTED = 130;
+    private const int SIGINT = 2;
+    private const int INTERRUPTED = 130;
 
     private InMemoryLoadJobRepository $jobs;
 
@@ -315,7 +315,7 @@ final class LoadDumpCommandTest extends TestCase
     public function it_should_let_an_interrupt_stop_the_command_once_the_job_is_over(): void
     {
         $command = $this->command();
-        (new CommandTester($command))->execute(['dump' => 'dumps/prod.sql.gz', '--force' => true]);
+        new CommandTester($command)->execute(['dump' => 'dumps/prod.sql.gz', '--force' => true]);
 
         self::assertSame(self::INTERRUPTED, $command->handleSignal(self::SIGINT));
     }
@@ -349,7 +349,7 @@ final class LoadDumpCommandTest extends TestCase
         putenv('USER=bob');
 
         try {
-            (new CommandTester($this->command()))->execute(['dump' => 'dumps/prod.sql.gz', '--force' => true]);
+            new CommandTester($this->command())->execute(['dump' => 'dumps/prod.sql.gz', '--force' => true]);
         } finally {
             putenv(false === $user ? 'USER' : 'USER='.$user);
         }

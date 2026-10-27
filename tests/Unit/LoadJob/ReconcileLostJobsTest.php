@@ -33,7 +33,7 @@ final class ReconcileLostJobsTest extends TestCase
 {
     use JobFixtures;
 
-    private const GRACE_PERIOD = 60;
+    private const int GRACE_PERIOD = 60;
 
     #[Test]
     public function it_should_mark_a_running_job_lost_once_it_holds_its_lock(): void
@@ -179,7 +179,7 @@ final class ReconcileLostJobsTest extends TestCase
     {
         $jobs = $this->createMock(LoadJobRepository::class);
         $jobs->method('active')->willReturn(new LoadJobs($listed));
-        $jobs->method('get')->with($listed->id)->willReturn($current);
+        $jobs->expects(self::once())->method('get')->with($listed->id)->willReturn($current);
 
         return $jobs;
     }

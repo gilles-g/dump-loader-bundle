@@ -17,11 +17,11 @@ use function Symfony\Component\String\u;
 
 final readonly class TargetDatabase
 {
-    public const SUPPORTED_SCHEMES = ['mysql', 'mysqli', 'pdo-mysql', 'mariadb'];
+    public const array SUPPORTED_SCHEMES = ['mysql', 'mysqli', 'pdo-mysql', 'mariadb'];
 
-    private const DEFAULT_PORT = 3306;
+    private const int DEFAULT_PORT = 3306;
 
-    private const DEFAULT_CHARSET = 'utf8mb4';
+    private const string DEFAULT_CHARSET = 'utf8mb4';
 
     public function __construct(
         public string $host,

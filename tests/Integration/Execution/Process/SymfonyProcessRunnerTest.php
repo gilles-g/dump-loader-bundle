@@ -38,7 +38,7 @@ final class SymfonyProcessRunnerTest extends TestCase
     public function it_should_feed_the_input_to_the_process(): void
     {
         $logs = $this->logs();
-        $command = (new ShellCommand(argv: ['sh', '-c', 'wc -c']))->withInput($this->chunks(3, 4));
+        $command = new ShellCommand(argv: ['sh', '-c', 'wc -c'])->withInput($this->chunks(3, 4));
 
         $result = $this->runner()->run($command, $this->tracker($logs));
 

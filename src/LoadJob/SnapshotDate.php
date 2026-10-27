@@ -15,7 +15,7 @@ namespace DumpLoader\LoadJob;
 
 final class SnapshotDate
 {
-    private const FORMAT = 'Y-m-d\TH:i:s.uP';
+    private const string FORMAT = 'Y-m-d\TH:i:s.uP';
 
     /**
      * @return ($date is null ? null : string)

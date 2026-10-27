@@ -34,7 +34,7 @@ final class MonitorKernel extends Kernel
         private readonly string $mountPath,
         ?MonitorSettings $settings = null,
     ) {
-        $this->settings = $settings ?? (new MonitorSettingsFile($projectDir))->read();
+        $this->settings = $settings ?? new MonitorSettingsFile($projectDir)->read();
 
         parent::__construct($environment, $debug);
     }

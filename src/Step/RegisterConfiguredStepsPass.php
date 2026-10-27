@@ -32,7 +32,7 @@ final class RegisterConfiguredStepsPass implements CompilerPassInterface
                 throw new InvalidConfigurationException(\sprintf('There is no step factory for "dump_loader.steps.%s". Known keys: %s.', $key, [] === $factories ? 'none' : implode(', ', array_keys($factories))));
             }
 
-            $definition = (new Definition(Step::class, [$options]))
+            $definition = new Definition(Step::class, [$options])
                 ->setFactory([new Reference($factories[$key]), 'create'])
                 ->addTag(Step::class);
 

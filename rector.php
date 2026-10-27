@@ -15,8 +15,8 @@ return RectorConfig::configure()
         NarrowObjectReturnTypeRector::class => [__DIR__.'/src/Controller'],
         RemoveNullNamedArgOnNullDefaultParamRector::class => [__DIR__.'/tests'],
     ])
-    ->withPhpVersion(PhpVersion::PHP_82)
-    ->withPhpSets(php82: true)
+    ->withPhpVersion(PhpVersion::PHP_84)
+    ->withPhpSets(php84: true)
     ->withImportNames(importShortClasses: false)
     ->withPreparedSets(
         deadCode: true,

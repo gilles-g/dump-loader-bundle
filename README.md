@@ -14,7 +14,7 @@ Load a SQL dump into your Symfony app's database from a web UI, and watch it run
 
 ## Requirements
 
-- PHP 8.2+ with `zlib` and `pdo_mysql`, Symfony 6.4, 7.4 or 8.0
+- PHP 8.4+ with `zlib` and `pdo_mysql`, Symfony 6.4, 7.4 or 8.0
 - MySQL or MariaDB, and the `mysql` client in the PHP image
 - `clear_env = no` in the php-fpm pool
 - `var/dump-loader` writable, `bin/console` executable by php-fpm

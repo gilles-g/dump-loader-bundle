@@ -28,8 +28,8 @@ use function Symfony\Component\String\u;
 
 final class FollowPanel
 {
-    private const VISIBLE_LOG_LINES = 12;
-    private const POLL_INTERVAL_SECONDS = 0.25;
+    private const int VISIBLE_LOG_LINES = 12;
+    private const float POLL_INTERVAL_SECONDS = 0.25;
 
     private float $sinceLastPoll = 0.0;
 

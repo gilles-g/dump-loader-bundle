@@ -23,9 +23,9 @@ use DumpLoader\Step\StepTracker;
 
 final readonly class MysqlClient implements DatabaseClient
 {
-    private const MAX_ALLOWED_PACKET = '1G';
+    private const string MAX_ALLOWED_PACKET = '1G';
 
-    private const DROP_EVERYTHING = <<<'SQL'
+    private const string DROP_EVERYTHING = <<<'SQL'
         SET FOREIGN_KEY_CHECKS = 0;
         SET SESSION group_concat_max_len = 1073741824;
         SELECT COALESCE(GROUP_CONCAT(CONCAT('`', REPLACE(TABLE_NAME, '`', '``'), '`')), '') INTO @views

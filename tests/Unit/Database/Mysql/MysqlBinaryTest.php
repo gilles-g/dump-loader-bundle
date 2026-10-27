@@ -24,13 +24,13 @@ final class MysqlBinaryTest extends TestCase
     #[Test]
     public function it_should_find_the_configured_client_in_the_path(): void
     {
-        self::assertSame('/usr/bin/mysql', (new MysqlBinary('mysql', $this->finderFinding('mysql', 'mariadb')))->locate());
+        self::assertSame('/usr/bin/mysql', new MysqlBinary('mysql', $this->finderFinding('mysql', 'mariadb'))->locate());
     }
 
     #[Test]
     public function it_should_fall_back_to_the_mariadb_client(): void
     {
-        self::assertSame('/usr/bin/mariadb', (new MysqlBinary('mysql', $this->finderFinding('mariadb')))->locate());
+        self::assertSame('/usr/bin/mariadb', new MysqlBinary('mysql', $this->finderFinding('mariadb'))->locate());
     }
 
     #[Test]
@@ -39,7 +39,7 @@ final class MysqlBinaryTest extends TestCase
         $this->expectException(MysqlBinaryNotFound::class);
         $this->expectExceptionMessage('Neither "mysql" nor "mariadb"');
 
-        (new MysqlBinary('mysql', $this->finderFinding()))->locate();
+        new MysqlBinary('mysql', $this->finderFinding())->locate();
     }
 
     #[Test]
@@ -48,7 +48,7 @@ final class MysqlBinaryTest extends TestCase
         $executableFinder = $this->createMock(ExecutableFinder::class);
         $executableFinder->expects(self::never())->method('find');
 
-        self::assertSame('/bin/sh', (new MysqlBinary('/bin/sh', $executableFinder))->locate());
+        self::assertSame('/bin/sh', new MysqlBinary('/bin/sh', $executableFinder)->locate());
     }
 
     #[Test]
@@ -57,7 +57,7 @@ final class MysqlBinaryTest extends TestCase
         $this->expectException(MysqlBinaryNotFound::class);
         $this->expectExceptionMessage('"/nowhere/mysql" is not an executable file');
 
-        (new MysqlBinary('/nowhere/mysql', $this->finderFinding('mysql', 'mariadb')))->locate();
+        new MysqlBinary('/nowhere/mysql', $this->finderFinding('mysql', 'mariadb'))->locate();
     }
 
     private function finderFinding(string ...$names): ExecutableFinder

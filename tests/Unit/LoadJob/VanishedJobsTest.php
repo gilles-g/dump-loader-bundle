@@ -28,7 +28,7 @@ final class VanishedJobsTest extends TestCase
 {
     use JobFixtures;
 
-    private const GRACE_PERIOD = 60;
+    private const int GRACE_PERIOD = 60;
 
     #[Test]
     public function it_should_include_a_running_job_whose_lock_is_free(): void
@@ -84,7 +84,7 @@ final class VanishedJobsTest extends TestCase
         $lock = $this->createMock(JobLock::class);
         $lock->expects(self::never())->method('isFree');
 
-        self::assertTrue((new VanishedJobs($lock, $clock, self::GRACE_PERIOD))->suspects($this->runningJob($clock)->snapshot()));
+        self::assertTrue(new VanishedJobs($lock, $clock, self::GRACE_PERIOD)->suspects($this->runningJob($clock)->snapshot()));
     }
 
     #[Test]

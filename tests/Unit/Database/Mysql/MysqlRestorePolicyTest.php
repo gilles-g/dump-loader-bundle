@@ -30,7 +30,7 @@ final class MysqlRestorePolicyTest extends TestCase
     public function it_should_refuse_a_dump_targeting_an_explicit_database(string $header, string $statement): void
     {
         try {
-            (new MysqlRestorePolicy())->ensureRestorable(self::input($header));
+            new MysqlRestorePolicy()->ensureRestorable(self::input($header));
             self::fail('The dump should have been refused.');
         } catch (DumpTargetsExplicitDatabase $refusal) {
             self::assertInstanceOf(DumpNotRestorable::class, $refusal);
@@ -54,7 +54,7 @@ final class MysqlRestorePolicyTest extends TestCase
         $header = "-- MySQL dump 10.13\n-- Host: db    Database: shop\n-- The CREATE DATABASE statement is not emitted here.\nDROP TABLE IF EXISTS `t`;\n";
         $input = self::input($header);
 
-        (new MysqlRestorePolicy())->ensureRestorable($input);
+        new MysqlRestorePolicy()->ensureRestorable($input);
 
         self::assertSame($header, implode('', iterator_to_array($input, false)));
     }
@@ -65,7 +65,7 @@ final class MysqlRestorePolicyTest extends TestCase
     {
         $dump = 'DROP TABLE IF EXISTS `t`;'.str_repeat("-- padding\n", 1000)."USE `other`;\n";
 
-        (new MysqlRestorePolicy())->ensureRestorable(self::input($dump));
+        new MysqlRestorePolicy()->ensureRestorable(self::input($dump));
     }
 
     private static function input(string $sql): StreamedSqlInput

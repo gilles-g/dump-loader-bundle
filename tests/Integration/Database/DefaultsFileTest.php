@@ -42,7 +42,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_write_the_file_in_the_var_dir(): void
     {
-        $path = (new DefaultsFile($this->varDir))->withCredentials($this->database(), static fn (string $path): string => $path);
+        $path = new DefaultsFile($this->varDir)->withCredentials($this->database(), static fn (string $path): string => $path);
 
         self::assertStringStartsWith($this->varDir.'/'.DefaultsFile::PREFIX, $path);
     }
@@ -50,7 +50,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_keep_the_file_private_to_the_php_user(): void
     {
-        $mode = (new DefaultsFile($this->varDir))->withCredentials($this->database(), static fn (string $path): int => fileperms($path) & 0o777);
+        $mode = new DefaultsFile($this->varDir)->withCredentials($this->database(), static fn (string $path): int => fileperms($path) & 0o777);
 
         self::assertSame(0o600, $mode);
     }
@@ -58,7 +58,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_write_the_credentials_of_the_target_database(): void
     {
-        $content = (new DefaultsFile($this->varDir))->withCredentials($this->database(), $this->contentOf(...));
+        $content = new DefaultsFile($this->varDir)->withCredentials($this->database(), $this->contentOf(...));
 
         self::assertStringContainsString("[client]\nhost = \"db\"\nport = 3307\nuser = \"app\"\n", $content);
         self::assertStringContainsString('password = "s3\"cr\\\\#t"', $content);
@@ -68,7 +68,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_turn_tls_off_for_the_mariadb_client_by_default(): void
     {
-        $content = (new DefaultsFile($this->varDir))->withCredentials($this->database(), $this->contentOf(...));
+        $content = new DefaultsFile($this->varDir)->withCredentials($this->database(), $this->contentOf(...));
 
         self::assertStringContainsString("\n[client-mariadb]\nskip-ssl\n", $content);
     }
@@ -76,7 +76,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_let_the_mariadb_client_use_tls_when_asked(): void
     {
-        $content = (new DefaultsFile($this->varDir, ssl: true))->withCredentials($this->database(), $this->contentOf(...));
+        $content = new DefaultsFile($this->varDir, ssl: true)->withCredentials($this->database(), $this->contentOf(...));
 
         self::assertStringContainsString("\n[client-mariadb]\nssl\n", $content);
         self::assertStringNotContainsString('skip-ssl', $content);
@@ -85,7 +85,7 @@ final class DefaultsFileTest extends TestCase
     #[Test]
     public function it_should_delete_the_file_once_used(): void
     {
-        (new DefaultsFile($this->varDir))->withCredentials($this->database(), static fn (string $path): bool => true);
+        new DefaultsFile($this->varDir)->withCredentials($this->database(), static fn (string $path): bool => true);
 
         self::assertSame([], glob($this->varDir.'/'.DefaultsFile::PREFIX.'*'));
     }
@@ -96,7 +96,7 @@ final class DefaultsFileTest extends TestCase
         $this->expectExceptionMessage('client crashed');
 
         try {
-            (new DefaultsFile($this->varDir))->withCredentials($this->database(), static function (string $path): never {
+            new DefaultsFile($this->varDir)->withCredentials($this->database(), static function (string $path): never {
                 throw new \RuntimeException('client crashed');
             });
         } finally {
@@ -109,7 +109,7 @@ final class DefaultsFileTest extends TestCase
     public function it_should_refuse_a_credential_holding_a_line_break_without_writing_anything(TargetDatabase $database, string $field): void
     {
         try {
-            (new DefaultsFile($this->varDir))->withCredentials($database, static fn (string $path): bool => true);
+            new DefaultsFile($this->varDir)->withCredentials($database, static fn (string $path): bool => true);
             self::fail('The line break should have been refused.');
         } catch (DefaultsFileNotWritable $exception) {
             self::assertStringContainsString('the '.$field.' of the target database DSN', $exception->getMessage());
@@ -135,7 +135,7 @@ final class DefaultsFileTest extends TestCase
     {
         $this->expectException(DefaultsFileNotWritable::class);
 
-        (new DefaultsFile('/proc/nowhere/dump-loader'))->withCredentials($this->database(), static fn (string $path): bool => true);
+        new DefaultsFile('/proc/nowhere/dump-loader')->withCredentials($this->database(), static fn (string $path): bool => true);
     }
 
     #[Test]
@@ -144,7 +144,7 @@ final class DefaultsFileTest extends TestCase
         $before = glob(sys_get_temp_dir().'/'.DefaultsFile::PREFIX.'*') ?: [];
 
         try {
-            (new DefaultsFile('/proc'))->withCredentials($this->database(), static fn (string $path): bool => true);
+            new DefaultsFile('/proc')->withCredentials($this->database(), static fn (string $path): bool => true);
             self::fail('Writing into an unwritable var_dir should have failed.');
         } catch (DefaultsFileNotWritable $exception) {
             self::assertStringContainsString('"/proc"', $exception->getMessage());

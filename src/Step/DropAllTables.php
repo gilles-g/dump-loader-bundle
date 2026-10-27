@@ -22,7 +22,7 @@ use DumpLoader\LoadJob\LogTag;
 
 final readonly class DropAllTables implements Step
 {
-    public const NAME = 'drop_all_tables';
+    public const string NAME = 'drop_all_tables';
 
     public function __construct(
         private DumpSource $dumpSource,

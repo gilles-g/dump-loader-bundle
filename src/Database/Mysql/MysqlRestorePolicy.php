@@ -18,9 +18,9 @@ use DumpLoader\Dump\SqlInput;
 
 final readonly class MysqlRestorePolicy implements RestorePolicy
 {
-    private const HEADER_WINDOW = 8192;
+    private const int HEADER_WINDOW = 8192;
 
-    private const EXPLICIT_DATABASE = '/^[\t ]*(CREATE\s+DATABASE|USE)\b/mi';
+    private const string EXPLICIT_DATABASE = '/^[\t ]*(CREATE\s+DATABASE|USE)\b/mi';
 
     public function ensureRestorable(SqlInput $input): void
     {

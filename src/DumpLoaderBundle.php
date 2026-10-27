@@ -37,11 +37,11 @@ use Symfony\Component\Process\PhpExecutableFinder;
 
 final class DumpLoaderBundle extends AbstractBundle
 {
-    public const EXECUTION_DETACHED = 'detached';
+    public const string EXECUTION_DETACHED = 'detached';
 
-    public const EXECUTION_SYNCHRONOUS = 'synchronous';
+    public const string EXECUTION_SYNCHRONOUS = 'synchronous';
 
-    private const BUILT_IN_STEPS = [
+    private const array BUILT_IN_STEPS = [
         DropAllTables::NAME,
         RestoreDatabase::NAME,
         RunMigrations::NAME,
@@ -223,7 +223,7 @@ final class DumpLoaderBundle extends AbstractBundle
 
     private function locatePhpBinary(): string
     {
-        $binary = (new PhpExecutableFinder())->find();
+        $binary = new PhpExecutableFinder()->find();
 
         return false === $binary ? \PHP_BINARY : $binary;
     }

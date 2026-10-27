@@ -28,7 +28,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 final readonly class AbortLoadJobController
 {
-    public const CSRF_TOKEN_ID = 'dump_loader_abort';
+    public const string CSRF_TOKEN_ID = 'dump_loader_abort';
 
     public function __construct(
         private AbortLoadJobHandler $abortLoadJobHandler,

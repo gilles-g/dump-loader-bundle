@@ -31,7 +31,7 @@ final class SecurityRequesterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $requester = (new SecurityRequester($this->tokenStorage($token)))->current();
+        $requester = new SecurityRequester($this->tokenStorage($token))->current();
 
         self::assertTrue($requester->isKnown());
         self::assertSame('alice@example.com', $requester->name);
@@ -40,7 +40,7 @@ final class SecurityRequesterTest extends TestCase
     #[Test]
     public function it_should_fall_back_to_the_unknown_requester_without_a_token(): void
     {
-        self::assertFalse((new SecurityRequester($this->tokenStorage(null)))->current()->isKnown());
+        self::assertFalse(new SecurityRequester($this->tokenStorage(null))->current()->isKnown());
     }
 
     #[Test]
@@ -49,7 +49,7 @@ final class SecurityRequesterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn(null);
 
-        self::assertFalse((new SecurityRequester($this->tokenStorage($token)))->current()->isKnown());
+        self::assertFalse(new SecurityRequester($this->tokenStorage($token))->current()->isKnown());
     }
 
     private function tokenStorage(?TokenInterface $token): TokenStorageInterface

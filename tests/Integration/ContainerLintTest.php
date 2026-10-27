@@ -131,7 +131,7 @@ final class ContainerLintTest extends KernelTestCase
     #[Test]
     public function it_should_register_the_load_command(): void
     {
-        $command = (new Application(self::$kernel ?? self::bootKernel()))->find('dump-loader:load');
+        $command = new Application(self::$kernel ?? self::bootKernel())->find('dump-loader:load');
 
         self::assertInstanceOf(LazyCommand::class, $command);
         self::assertInstanceOf(LoadDumpCommand::class, $command->getCommand());

@@ -20,7 +20,7 @@ use DumpLoader\LoadJob\LogTag;
 
 final readonly class RestoreDatabase implements Step
 {
-    public const NAME = 'restore_database';
+    public const string NAME = 'restore_database';
 
     public function __construct(
         private DumpSource $dumps,

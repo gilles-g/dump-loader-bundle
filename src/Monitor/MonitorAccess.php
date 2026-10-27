@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final readonly class MonitorAccess
 {
-    public const COOKIE = 'DUMP_LOADER_MONITOR_ACCESS';
+    public const string COOKIE = 'DUMP_LOADER_MONITOR_ACCESS';
 
-    private const LIFETIME = 'PT8H';
+    private const string LIFETIME = 'PT8H';
 
     public function __construct(
         #[\SensitiveParameter]

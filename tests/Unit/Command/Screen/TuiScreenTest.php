@@ -43,11 +43,11 @@ final class TuiScreenTest extends TestCase
 {
     use JobFixtures;
 
-    private const ENTER = "\r";
-    private const DOWN = "\x1b[B";
-    private const ESCAPE = "\x1b";
-    private const CTRL_C = "\x03";
-    private const KITTY_SPACE = "\x1b[32u";
+    private const string ENTER = "\r";
+    private const string DOWN = "\x1b[B";
+    private const string ESCAPE = "\x1b";
+    private const string CTRL_C = "\x03";
+    private const string KITTY_SPACE = "\x1b[32u";
 
     private VirtualTerminal $terminal;
 
@@ -68,7 +68,7 @@ final class TuiScreenTest extends TestCase
     {
         $this->type(self::DOWN, self::ENTER);
 
-        self::assertSame('dumps/staging.sql', (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseDump($this->twoDumps()));
+        self::assertSame('dumps/staging.sql', new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseDump($this->twoDumps()));
         self::assertStringContainsString('staging.sql', $this->terminal->getOutput());
         self::assertStringContainsString('2.0 KB, 2026-09-17 22:00', $this->terminal->getOutput());
     }
@@ -80,7 +80,7 @@ final class TuiScreenTest extends TestCase
 
         $this->expectExceptionObject(LoadRefused::cancelled());
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseDump($this->twoDumps());
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseDump($this->twoDumps());
     }
 
     #[Test]
@@ -88,7 +88,7 @@ final class TuiScreenTest extends TestCase
     {
         $this->type(' ', self::DOWN, ' ', self::ENTER);
 
-        $options = (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseOptions(
+        $options = new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseOptions(
             [$this->anOption('run_migrations', 'Plays the pending migrations'), $this->anOption('clear_caches')],
             LoadOptions::fromNames(['run_migrations']),
         );
@@ -103,7 +103,7 @@ final class TuiScreenTest extends TestCase
         $this->terminal->setKittyProtocolActive(true);
         $this->type(self::KITTY_SPACE, self::DOWN, self::KITTY_SPACE, self::ENTER);
 
-        $options = (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseOptions(
+        $options = new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseOptions(
             [$this->anOption('run_migrations'), $this->anOption('clear_caches')],
             LoadOptions::fromNames(['run_migrations']),
         );
@@ -117,7 +117,7 @@ final class TuiScreenTest extends TestCase
         $this->terminal = new VirtualTerminal(200, 30);
         $this->type(' ', self::ENTER);
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseOptions(
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseOptions(
             [$this->anOption('run_migrations'), $this->anOption('clear_caches')],
             LoadOptions::fromNames(['clear_caches']),
         );
@@ -131,7 +131,7 @@ final class TuiScreenTest extends TestCase
     #[Test]
     public function it_should_skip_the_options_question_when_there_is_no_option(): void
     {
-        self::assertSame([], (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseOptions([], LoadOptions::none())->names);
+        self::assertSame([], new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseOptions([], LoadOptions::none())->names);
         self::assertSame('', $this->terminal->getOutput());
     }
 
@@ -142,7 +142,7 @@ final class TuiScreenTest extends TestCase
 
         $this->expectExceptionObject(LoadRefused::cancelled());
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->chooseOptions([$this->anOption('run_migrations')], LoadOptions::none());
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->chooseOptions([$this->anOption('run_migrations')], LoadOptions::none());
     }
 
     #[Test]
@@ -150,7 +150,7 @@ final class TuiScreenTest extends TestCase
     {
         $this->type(self::ENTER);
 
-        self::assertFalse((new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->confirm('db.internal:3306/app'));
+        self::assertFalse(new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->confirm('db.internal:3306/app'));
         self::assertStringContainsString('Every table of "db.internal:3306/app" will be dropped', $this->terminal->getOutput());
     }
 
@@ -159,7 +159,7 @@ final class TuiScreenTest extends TestCase
     {
         $this->type(self::DOWN, self::ENTER);
 
-        self::assertTrue((new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->confirm('db.internal:3306/app'));
+        self::assertTrue(new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->confirm('db.internal:3306/app'));
     }
 
     #[Test]
@@ -179,7 +179,7 @@ final class TuiScreenTest extends TestCase
             $jobs->save($job);
         });
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->follow($followed);
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->follow($followed);
 
         self::assertTrue($followed->isOver());
 
@@ -211,7 +211,7 @@ final class TuiScreenTest extends TestCase
             $jobs->save($job);
         });
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->follow($followed);
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->follow($followed);
 
         self::assertStringContainsString('Waiting for the load job to start… — 0:00', $this->screen());
         self::assertStringContainsString('✘ Failed — 0:00', $this->screen());
@@ -237,7 +237,7 @@ final class TuiScreenTest extends TestCase
             $jobs->save($job);
         });
 
-        (new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal))->follow($followed);
+        new TuiScreen(EnglishLabels::create(), $this->clock, $this->terminal)->follow($followed);
 
         self::assertStringContainsString('done  Load job completed.', $this->screen());
         self::assertStringContainsString('✔ Completed — 0:00', $this->screen());
@@ -292,10 +292,10 @@ final class TuiScreenTest extends TestCase
         $lock = $this->createStub(JobLock::class);
         $lock->method('isFree')->willReturn(false);
 
-        return (new FollowLoadJobs(
+        return new FollowLoadJobs(
             $jobs,
             new VanishedJobs($lock, new MockClock('2026-09-18 08:00:00'), 60),
             new AbortLoadJobHandler($jobs, $abortSignal),
-        ))->follow($job->id());
+        )->follow($job->id());
     }
 }

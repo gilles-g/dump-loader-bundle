@@ -61,13 +61,13 @@ use Symfony\Component\Process\Process;
 #[Group('mysql')]
 final class MysqlRestoreTest extends TestCase
 {
-    private const DSN_VARIABLE = 'DUMP_LOADER_TEST_DSN';
+    private const string DSN_VARIABLE = 'DUMP_LOADER_TEST_DSN';
 
-    private const BINARY_VARIABLE = 'DUMP_LOADER_TEST_MYSQL_BINARY';
+    private const string BINARY_VARIABLE = 'DUMP_LOADER_TEST_MYSQL_BINARY';
 
-    private const BULK_ROWS = 200_000;
+    private const int BULK_ROWS = 200_000;
 
-    private const BULK_ROWS_PER_STATEMENT = 100;
+    private const int BULK_ROWS_PER_STATEMENT = 100;
 
     private static string $bulkDump = '';
 
@@ -105,7 +105,7 @@ final class MysqlRestoreTest extends TestCase
         fclose($handle);
 
         self::$bulkArchive = self::$bulkDump.'.gz';
-        (new Process(['sh', '-c', 'exec gzip -c -1 -- "$1" > "$2"', 'sh', self::$bulkDump, self::$bulkArchive]))->setTimeout(null)->mustRun();
+        new Process(['sh', '-c', 'exec gzip -c -1 -- "$1" > "$2"', 'sh', self::$bulkDump, self::$bulkArchive])->setTimeout(null)->mustRun();
 
         $archive = (string) file_get_contents(self::$bulkArchive);
         self::$truncatedArchive = self::$bulkDump.'.truncated.gz';
@@ -436,7 +436,7 @@ final class MysqlRestoreTest extends TestCase
 
     private function binary(string $name): string
     {
-        $found = (new ExecutableFinder())->find($name);
+        $found = new ExecutableFinder()->find($name);
 
         if (null === $found) {
             self::markTestSkipped(\sprintf('The "%s" binary is required to hand a local dump to the client.', $name));

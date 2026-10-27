@@ -35,13 +35,13 @@ final class MonitorSettingsFileTest extends TestCase
 
     protected function tearDown(): void
     {
-        (new Filesystem())->remove($this->projectDir);
+        new Filesystem()->remove($this->projectDir);
     }
 
     #[Test]
     public function it_should_read_the_defaults_when_nothing_was_published(): void
     {
-        $settings = (new MonitorSettingsFile($this->projectDir))->read();
+        $settings = new MonitorSettingsFile($this->projectDir)->read();
 
         self::assertEquals(MonitorSettings::defaultsFor($this->projectDir), $settings);
     }
@@ -77,7 +77,7 @@ final class MonitorSettingsFileTest extends TestCase
         $this->expectException(MonitorSettingsNotPublishable::class);
         $this->expectExceptionMessage('blocker/var/dump-loader.monitor.json');
 
-        (new MonitorSettingsFile($blocker))->publish(new MonitorSettings('/data'));
+        new MonitorSettingsFile($blocker)->publish(new MonitorSettings('/data'));
     }
 
     #[Test]
@@ -88,7 +88,7 @@ final class MonitorSettingsFileTest extends TestCase
         $this->expectException(UnreadableMonitorSettings::class);
         $this->expectExceptionMessage('dump-loader.monitor.json');
 
-        (new MonitorSettingsFile($this->projectDir))->read();
+        new MonitorSettingsFile($this->projectDir)->read();
     }
 
     /**
@@ -110,7 +110,7 @@ final class MonitorSettingsFileTest extends TestCase
         $this->expectException(UnreadableMonitorSettings::class);
         $this->expectExceptionMessage('missing or has the wrong type');
 
-        (new MonitorSettingsFile($this->projectDir))->read();
+        new MonitorSettingsFile($this->projectDir)->read();
     }
 
     #[Test]

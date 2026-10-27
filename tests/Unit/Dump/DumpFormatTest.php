@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DumpFormatTest extends TestCase
 {
-    private const FIXTURES = __DIR__.'/../../Fixtures/dumps';
+    private const string FIXTURES = __DIR__.'/../../Fixtures/dumps';
 
     #[DataProvider('recognizedPaths')]
     #[Test]

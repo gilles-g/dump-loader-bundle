@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class Labels
 {
-    private const DOMAIN = 'DumpLoaderBundle';
+    private const string DOMAIN = 'DumpLoaderBundle';
 
     public function __construct(
         private TranslatorInterface $translator,

@@ -24,19 +24,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class MonitorAccessTest extends TestCase
 {
-    private const SECRET = 'app-secret';
+    private const string SECRET = 'app-secret';
 
     #[Test]
     public function it_should_open_the_monitor_with_an_access_limited_to_its_path(): void
     {
-        $monitor = (new MonitorAccess(self::SECRET, new MockClock('2026-09-23 10:00:00 UTC'), '/dump-loader/monitor'))->open();
+        $monitor = new MonitorAccess(self::SECRET, new MockClock('2026-09-23 10:00:00 UTC'), '/dump-loader/monitor')->open();
         $access = $this->accessOf($monitor);
 
         self::assertSame('/dump-loader/monitor', $monitor->getTargetUrl());
         self::assertSame('/dump-loader/monitor', $access->getPath());
         self::assertTrue($access->isHttpOnly());
         self::assertSame(Cookie::SAMESITE_STRICT, $access->getSameSite());
-        self::assertSame((new \DateTimeImmutable('2026-09-23 18:00:00 UTC'))->getTimestamp(), $access->getExpiresTime());
+        self::assertSame(new \DateTimeImmutable('2026-09-23 18:00:00 UTC')->getTimestamp(), $access->getExpiresTime());
     }
 
     #[Test]
@@ -67,11 +67,11 @@ final class MonitorAccessTest extends TestCase
     public function it_should_refuse_an_access_signed_with_another_secret(): void
     {
         $clock = new MockClock('2026-09-23 10:00:00');
-        $foreign = (new MonitorAccess('another-secret', $clock, '/dump-loader/monitor'))->open();
+        $foreign = new MonitorAccess('another-secret', $clock, '/dump-loader/monitor')->open();
 
         $request = $this->carrying((string) $this->accessOf($foreign)->getValue());
 
-        self::assertFalse((new MonitorAccess(self::SECRET, $clock, '/dump-loader/monitor'))->isGrantedTo($request));
+        self::assertFalse(new MonitorAccess(self::SECRET, $clock, '/dump-loader/monitor')->isGrantedTo($request));
     }
 
     #[Test]

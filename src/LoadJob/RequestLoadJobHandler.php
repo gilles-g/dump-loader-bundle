@@ -23,7 +23,7 @@ use Symfony\Component\Lock\LockFactory;
 
 final readonly class RequestLoadJobHandler
 {
-    private const CRITICAL_SECTION = 'dump_loader.request';
+    private const string CRITICAL_SECTION = 'dump_loader.request';
 
     public function __construct(
         private DumpSource $dumps,

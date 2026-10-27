@@ -15,7 +15,7 @@ namespace DumpLoader\Monitor;
 
 final readonly class MonitorSettingsFile
 {
-    public const PATH = 'var/dump-loader.monitor.json';
+    public const string PATH = 'var/dump-loader.monitor.json';
 
     public function __construct(
         private string $projectDir,

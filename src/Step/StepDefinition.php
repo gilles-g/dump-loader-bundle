@@ -15,11 +15,11 @@ namespace DumpLoader\Step;
 
 final readonly class StepDefinition
 {
-    public const RANK_DROP_ALL_TABLES = 50;
-    public const RANK_RESTORE_DATABASE = 100;
-    public const RANK_RUN_MIGRATIONS = 200;
-    public const RANK_CLEAR_CACHES = 300;
-    public const RANK_AFTER_LOAD = 400;
+    public const int RANK_DROP_ALL_TABLES = 50;
+    public const int RANK_RESTORE_DATABASE = 100;
+    public const int RANK_RUN_MIGRATIONS = 200;
+    public const int RANK_CLEAR_CACHES = 300;
+    public const int RANK_AFTER_LOAD = 400;
 
     public function __construct(
         public string $name,

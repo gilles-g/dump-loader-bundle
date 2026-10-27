@@ -15,7 +15,7 @@ namespace DumpLoader\LoadJob;
 
 final readonly class ExecutionLog
 {
-    public const MAX_LINES = 2_000;
+    public const int MAX_LINES = 2_000;
 
     /**
      * @param list<LogLine> $lines

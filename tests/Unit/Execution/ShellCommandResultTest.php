@@ -34,7 +34,7 @@ final class ShellCommandResultTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        (new ShellCommandResult(exitCode: 0, errorOutput: []))->ensureSuccess();
+        new ShellCommandResult(exitCode: 0, errorOutput: [])->ensureSuccess();
     }
 
     #[Test]

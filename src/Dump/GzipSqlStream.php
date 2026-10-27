@@ -15,8 +15,8 @@ namespace DumpLoader\Dump;
 
 final class GzipSqlStream implements SqlStream
 {
-    private const DEFAULT_READ_SIZE = 131_072;
-    private const DEFAULT_CHUNK_SIZE = 1_048_576;
+    private const int DEFAULT_READ_SIZE = 131_072;
+    private const int DEFAULT_CHUNK_SIZE = 1_048_576;
 
     private int $rawBytesRead = 0;
 

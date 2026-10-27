@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PlainSqlStreamTest extends TestCase
 {
-    private const FIXTURES = __DIR__.'/../../Fixtures/dumps';
+    private const string FIXTURES = __DIR__.'/../../Fixtures/dumps';
 
     #[Test]
     public function it_should_yield_the_whole_file(): void

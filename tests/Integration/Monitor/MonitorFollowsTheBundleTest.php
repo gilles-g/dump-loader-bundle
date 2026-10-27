@@ -38,9 +38,9 @@ final class MonitorFollowsTheBundleTest extends KernelTestCase
 {
     use BootsTestKernel;
 
-    private const MOUNT_PATH = '/dump-loader/monitor';
+    private const string MOUNT_PATH = '/dump-loader/monitor';
 
-    private const PROJECT_DIR = '/DumpLoaderBundle/monitor-follows-the-bundle';
+    private const string PROJECT_DIR = '/DumpLoaderBundle/monitor-follows-the-bundle';
 
     /**
      * @var list<MonitorKernel>
@@ -113,8 +113,8 @@ final class MonitorFollowsTheBundleTest extends KernelTestCase
     public function it_should_compile_one_container_per_settings(): void
     {
         self::assertNotSame(
-            (new MonitorKernel('test', true, self::projectDir(), self::MOUNT_PATH))->getCacheDir(),
-            (new MonitorKernel('test', true, self::projectDir(), self::MOUNT_PATH, new MonitorSettings('/data/dump-loader')))->getCacheDir(),
+            new MonitorKernel('test', true, self::projectDir(), self::MOUNT_PATH)->getCacheDir(),
+            new MonitorKernel('test', true, self::projectDir(), self::MOUNT_PATH, new MonitorSettings('/data/dump-loader'))->getCacheDir(),
         );
     }
 

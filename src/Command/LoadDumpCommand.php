@@ -44,7 +44,7 @@ use function Symfony\Component\String\u;
 #[AsCommand(name: 'dump-loader:load', description: 'Chooses a dump, loads it into the application database and follows the load job.')]
 final class LoadDumpCommand extends Command implements SignalableCommandInterface
 {
-    private const SIGINT = 2;
+    private const int SIGINT = 2;
     private const INTERRUPTED = 128 + self::SIGINT;
 
     private ?FollowedLoadJob $followed = null;

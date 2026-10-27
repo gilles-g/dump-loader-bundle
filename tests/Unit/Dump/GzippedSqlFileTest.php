@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GzippedSqlFileTest extends TestCase
 {
-    private const FIXTURES = __DIR__.'/../../Fixtures/dumps';
+    private const string FIXTURES = __DIR__.'/../../Fixtures/dumps';
 
     #[Test]
     public function it_should_read_the_beginning_of_the_file_decompressed(): void

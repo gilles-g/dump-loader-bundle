@@ -24,7 +24,7 @@ final readonly class LoadJobId
 
     public static function generate(): self
     {
-        return new self((new Ulid())->toBase32());
+        return new self(new Ulid()->toBase32());
     }
 
     public static function fromString(string $value): self

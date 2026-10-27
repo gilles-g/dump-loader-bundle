@@ -25,11 +25,11 @@ use Symfony\Component\Process\Process;
 
 final readonly class SymfonyProcessRunner implements ProcessRunner
 {
-    private const BUSY_TICK_MICROSECONDS = 1_000;
-    private const IDLE_TICK_MICROSECONDS = 20_000;
-    private const IDLE_AFTER_SECONDS = 1;
-    private const ERROR_OUTPUT_LINES = 20;
-    private const STOP_TIMEOUT_SECONDS = 5;
+    private const int BUSY_TICK_MICROSECONDS = 1_000;
+    private const int IDLE_TICK_MICROSECONDS = 20_000;
+    private const int IDLE_AFTER_SECONDS = 1;
+    private const int ERROR_OUTPUT_LINES = 20;
+    private const int STOP_TIMEOUT_SECONDS = 5;
 
     public function __construct(
         private ClockInterface $clock,

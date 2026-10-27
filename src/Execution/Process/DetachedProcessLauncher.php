@@ -23,8 +23,8 @@ use Symfony\Component\Process\Process;
 
 final readonly class DetachedProcessLauncher implements LoadJobLauncher
 {
-    private const COMMAND_NAME = 'dump-loader:run';
-    private const LAUNCH_TIMEOUT_SECONDS = 10;
+    private const string COMMAND_NAME = 'dump-loader:run';
+    private const int LAUNCH_TIMEOUT_SECONDS = 10;
 
     public function __construct(
         private string $consolePath,

@@ -15,11 +15,11 @@ namespace DumpLoader\Monitor;
 
 final readonly class MonitorSettings
 {
-    public const DEFAULT_VAR_DIR = 'var/dump-loader';
+    public const string DEFAULT_VAR_DIR = 'var/dump-loader';
 
-    public const DEFAULT_PENDING_GRACE_PERIOD = 60;
+    public const int DEFAULT_PENDING_GRACE_PERIOD = 60;
 
-    public const DEFAULT_RETENTION = 50;
+    public const int DEFAULT_RETENTION = 50;
 
     public function __construct(
         public string $varDir,

@@ -17,7 +17,7 @@ use DumpLoader\Execution\ShellCommand;
 
 final readonly class GzippedSqlFile implements SqlInput
 {
-    private const SCRIPT = <<<'SH'
+    private const string SCRIPT = <<<'SH'
         set -o pipefail
         decompressor=$1
         dump=$2

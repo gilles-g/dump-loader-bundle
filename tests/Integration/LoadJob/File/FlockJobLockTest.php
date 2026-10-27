@@ -111,12 +111,12 @@ final class FlockJobLockTest extends TestCase
         $lock = new FlockJobLock($this->directory);
         $lock->acquire($this->anId());
 
-        self::assertFalse((new FlockJobLock($this->directory))->acquire($this->anId()));
+        self::assertFalse(new FlockJobLock($this->directory)->acquire($this->anId()));
 
         $lock->release($this->anId());
 
         self::assertTrue($lock->isFree($this->anId()));
-        self::assertTrue((new FlockJobLock($this->directory))->acquire($this->anId()));
+        self::assertTrue(new FlockJobLock($this->directory)->acquire($this->anId()));
     }
 
     #[Test]
@@ -156,7 +156,7 @@ final class FlockJobLockTest extends TestCase
     {
         $this->expectException(JobDirectoryNotWritable::class);
 
-        (new FlockJobLock('/proc/nowhere/dump-loader'))->acquire($this->anId());
+        new FlockJobLock('/proc/nowhere/dump-loader')->acquire($this->anId());
     }
 
     #[Test]
@@ -169,7 +169,7 @@ final class FlockJobLockTest extends TestCase
         try {
             $this->expectException(JobDirectoryNotWritable::class);
 
-            (new FlockJobLock($this->directory))->acquire($this->anId());
+            new FlockJobLock($this->directory)->acquire($this->anId());
         } finally {
             chmod($this->directory.'/'.$this->anId()->value.'.lock', 0o644);
         }
@@ -183,7 +183,7 @@ final class FlockJobLockTest extends TestCase
         chmod($this->directory.'/'.$this->anId()->value.'.lock', 0o000);
 
         try {
-            self::assertFalse((new FlockJobLock($this->directory))->isFree($this->anId()));
+            self::assertFalse(new FlockJobLock($this->directory)->isFree($this->anId()));
         } finally {
             chmod($this->directory.'/'.$this->anId()->value.'.lock', 0o644);
         }

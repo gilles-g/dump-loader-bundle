@@ -30,7 +30,7 @@ final class RegisterConfiguredStepsPassTest extends TestCase
     {
         $container = $this->container(['named' => ['name' => 'anonymize']]);
 
-        (new RegisterConfiguredStepsPass())->process($container);
+        new RegisterConfiguredStepsPass()->process($container);
 
         $definition = $container->getDefinition('dump_loader.step.configured.named');
         self::assertTrue($definition->hasTag(Step::class));
@@ -43,7 +43,7 @@ final class RegisterConfiguredStepsPassTest extends TestCase
     {
         $container = $this->container([]);
 
-        (new RegisterConfiguredStepsPass())->process($container);
+        new RegisterConfiguredStepsPass()->process($container);
 
         self::assertSame([], $container->findTaggedServiceIds(Step::class));
     }
@@ -56,7 +56,7 @@ final class RegisterConfiguredStepsPassTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('There is no step factory for "dump_loader.steps.anonimization". Known keys: named.');
 
-        (new RegisterConfiguredStepsPass())->process($container);
+        new RegisterConfiguredStepsPass()->process($container);
     }
 
     #[Test]
@@ -68,7 +68,7 @@ final class RegisterConfiguredStepsPassTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Known keys: none.');
 
-        (new RegisterConfiguredStepsPass())->process($container);
+        new RegisterConfiguredStepsPass()->process($container);
     }
 
     #[Test]
@@ -77,7 +77,7 @@ final class RegisterConfiguredStepsPassTest extends TestCase
         $container = $this->container(['named' => []]);
         $container->register('not_a_factory', FakeStep::class)->addTag(StepFactory::class);
 
-        (new RegisterConfiguredStepsPass())->process($container);
+        new RegisterConfiguredStepsPass()->process($container);
 
         self::assertTrue($container->hasDefinition('dump_loader.step.configured.named'));
     }

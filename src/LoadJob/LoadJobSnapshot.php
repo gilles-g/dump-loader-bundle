@@ -34,7 +34,7 @@ namespace DumpLoader\LoadJob;
  */
 final readonly class LoadJobSnapshot
 {
-    public const VERSION = 1;
+    public const int VERSION = 1;
 
     /**
      * @param list<PlannedStep> $steps

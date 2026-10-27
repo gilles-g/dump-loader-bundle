@@ -20,8 +20,8 @@ use Psr\Clock\ClockInterface;
 
 final readonly class RunLoadJobHandler
 {
-    private const LOCK_ATTEMPTS = 3;
-    private const MICROSECONDS_BETWEEN_ATTEMPTS = 100_000;
+    private const int LOCK_ATTEMPTS = 3;
+    private const int MICROSECONDS_BETWEEN_ATTEMPTS = 100_000;
 
     public function __construct(
         private LoadJobRepository $jobs,

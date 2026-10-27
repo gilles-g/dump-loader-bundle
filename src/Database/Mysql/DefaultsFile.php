@@ -19,7 +19,7 @@ use function Symfony\Component\String\u;
 
 final readonly class DefaultsFile
 {
-    public const PREFIX = 'defaults-extra-';
+    public const string PREFIX = 'defaults-extra-';
 
     public function __construct(
         private string $varDir,
