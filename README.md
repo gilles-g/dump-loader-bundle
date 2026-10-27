@@ -1,4 +1,4 @@
-# dump-loader
+# dump-loader-bundle
 
 Load a SQL dump into your Symfony app's database from a web UI, and watch it run live.
 
@@ -23,7 +23,7 @@ Load a SQL dump into your Symfony app's database from a web UI, and watch it run
 ## Install
 
 ```bash
-composer require gilles-g/dump-loader
+composer require gilles-g/dump-loader-bundle
 ```
 
 Register `DumpLoader\DumpLoaderBundle::class => ['all' => true]` in `config/bundles.php`.

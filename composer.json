@@ -1,5 +1,5 @@
 {
-    "name": "gilles-g/dump-loader",
+    "name": "gilles-g/dump-loader-bundle",
     "description": "Symfony bundle loading a SQL dump into the application database, with a live web UI.",
     "license": "MIT",
     "type": "symfony-bundle",

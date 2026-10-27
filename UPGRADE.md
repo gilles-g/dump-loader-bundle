@@ -1,6 +1,6 @@
 # Upgrading
 
-This file records the changes an application has to make when upgrading `gilles-g/dump-loader`.
+This file records the changes an application has to make when upgrading `gilles-g/dump-loader-bundle`.
 It follows [semantic versioning](https://semver.org): only major versions may break an application.
 
 ## What is covered by backward compatibility

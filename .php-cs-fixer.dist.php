@@ -7,7 +7,7 @@ if (!file_exists(__DIR__.'/src')) {
 }
 
 $header = <<<'EOF'
-    This file is part of the gilles-g/dump-loader package.
+    This file is part of the gilles-g/dump-loader-bundle package.
 
     (c) gilles-g <ggauthier@spiriit.com>
 

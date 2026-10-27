@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the gilles-g/dump-loader package.
+ * This file is part of the gilles-g/dump-loader-bundle package.
  *
  * (c) gilles-g <ggauthier@spiriit.com>
  *
